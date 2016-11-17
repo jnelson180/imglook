@@ -1,0 +1,28 @@
+{
+  "name": "imglook",
+  "version": "1.0.0",
+  "description": "Image Search Abstraction Layer for FCC Project",
+  "main": "imglook.js",
+  "scripts": {
+    "test": "node imglook.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jnelson180/imglook.git"
+  },
+  "keywords": [
+    "image",
+    "search",
+    "abstraction",
+    "layer"
+  ],
+  "author": "Jake Nelson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jnelson180/imglook/issues"
+  },
+  "homepage": "https://github.com/jnelson180/imglook#readme",
+  "dependencies": {
+    "mongodb": "^2.2.11"
+  }
+}
