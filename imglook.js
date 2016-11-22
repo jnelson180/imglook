@@ -1,10 +1,4 @@
 /* TO DO -----------------------------------------------------
-																																																																																																																																																																																																																																																																																																																																																																																																																																																					
-User Story: I can get the image URLs, alt text and page urls for a 
-set of images relating to a given search string.
-
-User Story: I can paginate through the responses by adding a 
-?offset=2 parameter to the URL.
 
 User Story: I can get a list of the most recently submitted search strings.
 */
@@ -32,7 +26,7 @@ MongoClient.connect(dbUrl, function(err, db) {
     if (err) throw err;
 
     // get /* URL aka search term(s)
-    app.get('/*', function(req, res) {
+    app.get('/api/imagesearch/*', function(req, res) {
         var userQuery = req.url.substr(1);
         var options = {
             host: "www.googleapis.com",
