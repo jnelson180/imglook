@@ -28,10 +28,21 @@ MongoClient.connect(dbUrl, function(err, db) {
     // get /* URL aka search term(s)
     app.get('/api/imagesearch/*', function(req, res) {
         var userQuery = req.url.substr(1);
+        var term = req.params[0];
+        var timestamp = (new Date().toISOString());
         var options = {
             host: "www.googleapis.com",
             path: "/customsearch/v1?key=" + apiKey + "&cx=" + cx + "&q=" + userQuery + "&searchType=image",
         };
+
+        // send search term and timestamp to database
+        var collection = db.collection('searchHistory');
+        collection.insert([{
+        	"term": term, "when": timestamp
+        }], function(err, result) {
+        	if (err) throw err;
+        	console.log("Inserted " + result.ops[0] + ".");
+        });
 
         // send GET request
         https.get(options, function(response) {
@@ -56,11 +67,22 @@ MongoClient.connect(dbUrl, function(err, db) {
                 }
                 console.log(responseObject.items);
                 console.log(responseObject.items.length);
-
+                console.log(term);
+        // TEST - find db data
+        collection.find({        }).toArray(function(err, docs) {
+        	if (err) throw err;
+        	console.log(docs);
+        });
                 res.send(results);
 
             });
         });
+    });
+
+    app.get('/api/latest/imagesearch/', function(req, res) {
+    	// return last 10 searches. 
+    	// [{ "term": term, "when": "2016-11-22T03:10:07.927Z" }]
+
     });
 
 });
