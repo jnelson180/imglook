@@ -1,12 +1,11 @@
-/* TO DO -----------------------------------------------------
+/* TO DO -------------------
+	1. Stop express from continuing to second app.get
+	after rendering
 
-User Story: I can get a list of the most recently submitted search strings.
-*/
-// example URL = https://www.googleapis.com/customsearch/v1?key=AIzaSyA1gslbPSEXtJZi_WyERVCFBD9UVed3Thg&cx=011918724492074459688:68z1b4dujci&q=lectures&searchType=image
-/* example search results format 
-{"url": url, "snippet": snippet, "thumbnail": thumbnail, 
-"context": context}
-*/
+	2. (Optional) If search term is a URL, return msg 
+	"Cannot /GET ...URL" instead of starting a search
+	------------------------ */
+
 var express = require('express');
 var app = express();
 var https = require('https');
@@ -25,9 +24,16 @@ app.use(express.static(__dirname + '/public'));
 MongoClient.connect(dbUrl, function(err, db) {
     if (err) throw err;
     var collection = db.collection('searchHistory');
-    
+
+    // serve home page
+    app.get('/api/imagesearch/', function(req, res) {
+    	console.log("Visitor to home page.");
+    	res.render('index');
+    	res.end();
+    });
+
     // get /* URL aka search term(s)
-    app.get('/api/imagesearch/*', function(req, res) {
+    app.get('/api/imagesearch/**', function(req, res) {
         var userQuery = req.url.substr(1);
         var term = req.params[0];
         var timestamp = (new Date().toISOString());
@@ -74,7 +80,6 @@ MongoClient.connect(dbUrl, function(err, db) {
     	// return last 10 searches. 
     	db.collection('searchHistory').find({}, { _id: 0, qty: 0 }).sort({ $natural: -1 }).limit(10).toArray(function(err, docs) {
     		if (err) throw err;
-    		console.log(docs);
     		res.send(docs);
     	})
     });
