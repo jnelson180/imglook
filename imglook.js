@@ -24,7 +24,8 @@ app.use(express.static(__dirname + '/public'));
 
 MongoClient.connect(dbUrl, function(err, db) {
     if (err) throw err;
-
+    var collection = db.collection('searchHistory');
+    
     // get /* URL aka search term(s)
     app.get('/api/imagesearch/*', function(req, res) {
         var userQuery = req.url.substr(1);
@@ -36,7 +37,6 @@ MongoClient.connect(dbUrl, function(err, db) {
         };
 
         // send search term and timestamp to database
-        var collection = db.collection('searchHistory');
         collection.insert([{
         	"term": term, "when": timestamp
         }], function(err, result) {
@@ -65,24 +65,18 @@ MongoClient.connect(dbUrl, function(err, db) {
                     }
                     results.push(curObj);
                 }
-                console.log(responseObject.items);
-                console.log(responseObject.items.length);
-                console.log(term);
-        // TEST - find db data
-        collection.find({        }).toArray(function(err, docs) {
-        	if (err) throw err;
-        	console.log(docs);
-        });
                 res.send(results);
-
             });
         });
     });
 
     app.get('/api/latest/imagesearch/', function(req, res) {
     	// return last 10 searches. 
-    	// [{ "term": term, "when": "2016-11-22T03:10:07.927Z" }]
-
+    	db.collection('searchHistory').find({}, { _id: 0, qty: 0 }).sort({ $natural: -1 }).limit(10).toArray(function(err, docs) {
+    		if (err) throw err;
+    		console.log(docs);
+    		res.send(docs);
+    	})
     });
 
 });
