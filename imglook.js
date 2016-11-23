@@ -4,6 +4,12 @@
 
 	2. (Optional) If search term is a URL, return msg 
 	"Cannot /GET ...URL" instead of starting a search
+
+	3. Get CSS template working correctly
+
+	4. Update package.JSON appropriately
+
+	5. (Optional) Look in to express.route re: To Do #1
 	------------------------ */
 
 var express = require('express');
