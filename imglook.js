@@ -1,15 +1,6 @@
 /* TO DO -------------------
-	1. Stop express from continuing to second app.get
-	after rendering
 
-	2. (Optional) If search term is a URL, return msg 
-	"Cannot /GET ...URL" instead of starting a search
-
-	3. Get CSS template working correctly
-
-	4. Update package.JSON appropriately
-
-	5. (Optional) Look in to express.route re: To Do #1
+	1. Update package.JSON appropriately
 	------------------------ */
 
 var express = require('express');
@@ -21,7 +12,6 @@ var dbUrl = "mongodb://localhost:27017"; // NOT process.env.MONGOLAB_URI; (yet);
 var port = process.env.PORT || 8080;
 var cx = "011918724492074459688:68z1b4dujci";
 var apiKey = "AIzaSyA1gslbPSEXtJZi_WyERVCFBD9UVed3Thg";
-// To use this key in your application, pass it with the key=API_KEY parameter.
 
 // set up view engine and static asset dir
 app.set('view engine', 'ejs');
@@ -39,7 +29,7 @@ MongoClient.connect(dbUrl, function(err, db) {
     });
 
     // get /* URL aka search term(s)
-    app.get('/api/imagesearch/**', function(req, res) {
+    app.get('/api/imagesearch/*', function(req, res) {
         var userQuery = req.url.substr(1);
         var term = req.params[0];
         var timestamp = (new Date().toISOString());
