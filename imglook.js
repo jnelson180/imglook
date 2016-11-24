@@ -1,18 +1,11 @@
-/* TO DO -------------------
-
-	1. Update package.JSON appropriately
-	------------------------ */
-
 var express = require('express');
 var app = express();
 var https = require('https');
 var mongodb = require('mongodb');
 var MongoClient = mongodb.MongoClient;
-var dbUrl = "mongodb://localhost:27017"; // NOT process.env.MONGOLAB_URI; (yet);
+var dbUrl = process.env.MLAB_IMGLOOK_URI; // NOT process.env.MONGOLAB_URI; (yet);
 var port = process.env.PORT || 8080;
-// var cx = "011918724492074459688:68z1b4dujci";
 var cx = process.env.GOOGLE_CX;
-// var apiKey = "AIzaSyA1gslbPSEXtJZi_WyERVCFBD9UVed3Thg";
 var apiKey = process.env.GOOGLE_APIKEY;
 
 // set up view engine and static asset dir
