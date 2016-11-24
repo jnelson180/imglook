@@ -4,7 +4,7 @@
   "description": "Image Search Abstraction Layer for FCC Project",
   "main": "imglook.js",
   "scripts": {
-    "test": "node imglook.js"
+    "start": "node imglook.js"
   },
   "repository": {
     "type": "git",
@@ -23,8 +23,8 @@
   },
   "homepage": "https://github.com/jnelson180/imglook#readme",
   "dependencies": {
+    "ejs": "~2.5.2",
     "express": "~4.14.0",
-	 "ejs": "~2.5.2",
-    "mongodb": "^2.2.11"
+    "mongodb": "^2.2.11",
   }
 }
