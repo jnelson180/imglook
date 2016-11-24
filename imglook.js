@@ -3,7 +3,7 @@ var app = express();
 var https = require('https');
 var mongodb = require('mongodb');
 var MongoClient = mongodb.MongoClient;
-var dbUrl = process.env.MLAB_IMGLOOK_URI; // NOT process.env.MONGOLAB_URI; (yet);
+var dbUrl = process.env.MLAB_IMGLOOK_URI;
 var port = process.env.PORT || 8080;
 var cx = process.env.GOOGLE_CX;
 var apiKey = process.env.GOOGLE_APIKEY;
@@ -18,9 +18,9 @@ MongoClient.connect(dbUrl, function(err, db) {
 
     // serve home page
     app.get('/api/imagesearch/', function(req, res) {
-    	console.log("Visitor to home page.");
-    	res.render('index');
-    	res.end();
+        console.log("Visitor to home page.");
+        res.render('index');
+        res.end();
     });
 
     // get /* URL aka search term(s)
@@ -33,12 +33,14 @@ MongoClient.connect(dbUrl, function(err, db) {
             path: "/customsearch/v1?key=" + apiKey + "&cx=" + cx + "&q=" + userQuery + "&searchType=image",
         };
 
+
         // send search term and timestamp to database
         collection.insert([{
-        	"term": term, "when": timestamp
+            "term": term,
+            "when": timestamp
         }], function(err, result) {
-        	if (err) throw err;
-        	console.log("Inserted " + result.ops[0] + ".");
+            if (err) throw err;
+            console.log("Inserted " + result.ops[0] + ".");
         });
 
         // send GET request
@@ -68,11 +70,16 @@ MongoClient.connect(dbUrl, function(err, db) {
     });
 
     app.get('/api/latest/imagesearch/', function(req, res) {
-    	// return last 10 searches. 
-    	db.collection('searchHistory').find({}, { _id: 0, qty: 0 }).sort({ $natural: -1 }).limit(10).toArray(function(err, docs) {
-    		if (err) throw err;
-    		res.send(docs);
-    	})
+        // return last 10 searches. 
+        db.collection('searchHistory').find({}, {
+            _id: 0,
+            qty: 0
+        }).sort({
+            $natural: -1
+        }).limit(10).toArray(function(err, docs) {
+            if (err) throw err;
+            res.send(docs);
+        })
     });
 
 });
