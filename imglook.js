@@ -12,7 +12,7 @@ var apiKey = process.env.GOOGLE_APIKEY;
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
 
-MongoClient.connect(dbUrl, function(err, db) {
+MongoClient.connect(String(dbUrl), function(err, db) {
     if (err) throw err;
     var collection = db.collection('searchHistory');
 
